@@ -68,8 +68,8 @@ const convertedTemperature = temp => {
   return Math.round(temp - 273.15)
 }
 
-onMounted(() => {
-  axios
+onMounted(async () => {
+  await axios
     .get(
       `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}`
     )

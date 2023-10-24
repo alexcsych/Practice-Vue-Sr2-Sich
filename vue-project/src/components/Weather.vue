@@ -95,9 +95,10 @@ const convertedTemperature = temp => {
   return Math.round(temp - 273.15)
 }
 
-const geolocation = pos => {
+const geolocation = async pos => {
   const crd = pos.coords
-  axios
+
+  await axios
     .get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${apiKey}`
     )
