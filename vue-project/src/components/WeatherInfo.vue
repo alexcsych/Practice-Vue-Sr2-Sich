@@ -51,44 +51,38 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from 'axios'
 import { ref, onMounted, toRefs } from 'vue'
 
-export default {
-  props: {
-    city: String
-  },
-  setup (props) {
-    const { city } = toRefs(props)
-    const loading = ref(true)
-    const error = ref('')
-    const weather = ref({})
-    const apiKey = '7914d5a440960cfd5df3bd0388a7ad0f'
+const props = defineProps({
+  city: String
+})
+const { city } = toRefs(props)
+const loading = ref(true)
+const error = ref('')
+const weather = ref({})
+const apiKey = '7914d5a440960cfd5df3bd0388a7ad0f'
 
-    const convertedTemperature = temp => {
-      return Math.round(temp - 273.15)
-    }
-
-    onMounted(() => {
-      axios
-        .get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}`
-        )
-        .then(({ data }) => {
-          weather.value = data
-        })
-        .catch(() => {
-          error.value = 'Weather data not found for this city.'
-        })
-        .finally(() => {
-          loading.value = false
-        })
-    })
-
-    return { city, loading, error, weather, apiKey, convertedTemperature }
-  }
+const convertedTemperature = temp => {
+  return Math.round(temp - 273.15)
 }
+
+onMounted(() => {
+  axios
+    .get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}`
+    )
+    .then(({ data }) => {
+      weather.value = data
+    })
+    .catch(() => {
+      error.value = 'Weather data not found for this city.'
+    })
+    .finally(() => {
+      loading.value = false
+    })
+})
 </script>
 
 <style scoped>

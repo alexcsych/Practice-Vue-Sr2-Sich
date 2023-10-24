@@ -72,78 +72,62 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from 'axios'
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export default {
-  setup () {
-    const cities = ref([])
-    const newCity = ref('')
-    const selectedCity = ref('')
-    const loading = ref(true)
-    const error = ref('')
-    const weather = ref({})
-    const apiKey = '7914d5a440960cfd5df3bd0388a7ad0f'
+const cities = ref([])
+const newCity = ref('')
+const selectedCity = ref('')
+const loading = ref(true)
+const error = ref('')
+const weather = ref({})
+const apiKey = '7914d5a440960cfd5df3bd0388a7ad0f'
 
-    const addCity = () => {
-      if (newCity.value && !cities.value.includes(newCity.value)) {
-        cities.value.push(newCity.value)
-        newCity.value = ''
-      }
-    }
-
-    const convertedTemperature = temp => {
-      return Math.round(temp - 273.15)
-    }
-
-    const geolocation = pos => {
-      const crd = pos.coords
-      axios
-        .get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${apiKey}`
-        )
-        .then(({ data }) => {
-          weather.value = data
-          if (cities.value.length === 0) {
-            cities.value.push(data.name)
-          }
-        })
-        .catch(() => {
-          error.value = 'Weather data not found for this city.'
-        })
-        .finally(() => {
-          loading.value = false
-        })
-    }
-
-    onMounted(() => {
-      if (
-        localStorage.getItem('cities') !== null &&
-        localStorage.getItem('cities') !== ''
-      ) {
-        cities.value = JSON.parse(localStorage.getItem('cities'))
-      }
-      navigator.geolocation.getCurrentPosition(geolocation)
-    })
-
-    onUnmounted(() => {
-      localStorage.setItem('cities', JSON.stringify(cities.value))
-    })
-
-    return {
-      cities,
-      newCity,
-      selectedCity,
-      addCity,
-      loading,
-      error,
-      weather,
-      apiKey,
-      convertedTemperature
-    }
+const addCity = () => {
+  if (newCity.value && !cities.value.includes(newCity.value)) {
+    cities.value.push(newCity.value)
+    newCity.value = ''
   }
 }
+
+const convertedTemperature = temp => {
+  return Math.round(temp - 273.15)
+}
+
+const geolocation = pos => {
+  const crd = pos.coords
+  axios
+    .get(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${apiKey}`
+    )
+    .then(({ data }) => {
+      weather.value = data
+      if (cities.value.length === 0) {
+        cities.value.push(data.name)
+      }
+    })
+    .catch(() => {
+      error.value = 'Weather data not found for this city.'
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
+onMounted(() => {
+  if (
+    localStorage.getItem('cities') !== null &&
+    localStorage.getItem('cities') !== ''
+  ) {
+    cities.value = JSON.parse(localStorage.getItem('cities'))
+  }
+  navigator.geolocation.getCurrentPosition(geolocation)
+})
+
+onUnmounted(() => {
+  localStorage.setItem('cities', JSON.stringify(cities.value))
+})
 </script>
 
 <style scoped>
