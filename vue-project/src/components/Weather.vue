@@ -1,69 +1,85 @@
 <template>
-  <div>
-    <div>
-      <p>City</p>
-      <input type="text" v-model="newCity" />
-      <button @click="addCity">Add new City</button>
+  <div class="p-4">
+    <div class="mb-4">
+      <p class="text-lg font-semibold">City</p>
+      <input v-model="newCity" class="border p-2" type="text" />
+      <button
+        @click="addCity"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
+      >
+        Add new City
+      </button>
     </div>
-    <div>
-      <p>Weather</p>
-      <select name="weather" v-model="selectedCity">
+    <div class="mb-4">
+      <p class="text-lg font-semibold">Weather</p>
+      <select v-model="selectedCity" name="weather" class="border p-2">
         <option v-for="(city, index) in cities" :key="index" :value="city">
           {{ city }}
         </option>
       </select>
       <router-link
         v-show="selectedCity !== ''"
-        v-bind:to="'/weather-info/' + selectedCity"
+        :to="'/weather-info/' + selectedCity"
+        class="ml-2"
       >
-        <button>Get Weather</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+          Get Weather
+        </button>
       </router-link>
     </div>
     <div>
-      <div v-if="loading" class="loading">Loading...</div>
+      <div v-if="loading" class="text-blue-500 font-semibold">Loading...</div>
       <div v-else>
-        <div v-if="error" class="error">{{ error }}</div>
+        <div v-if="error" class="text-red-500 font-semibold">{{ error }}</div>
         <div v-else>
-          <table>
+          <table
+            class="table-auto w-full border-collapse border border-gray-300"
+          >
             <tr>
-              <td>{{ weather.sys.country }}</td>
-              <td>{{ weather.name }}</td>
-              <td>[{{ weather.coord.lat }}°, {{ weather.coord.lon }}°]</td>
+              <td class="border px-4 py-2">{{ weather.sys.country }}</td>
+              <td class="border px-4 py-2">{{ weather.name }}</td>
+              <td class="border px-4 py-2">
+                [{{ weather.coord.lat }}°, {{ weather.coord.lon }}°]
+              </td>
             </tr>
             <tr>
-              <td>humidity</td>
-              <td>{{ weather.main.humidity }}</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">humidity</td>
+              <td class="border px-4 py-2">{{ weather.main.humidity }}</td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
             <tr>
-              <td>temp/AVG</td>
-              <td>{{ convertedTemperature(weather.main.temp) }}°C</td>
-              <td>{{ weather.main.temp }} K</td>
+              <td class="border px-4 py-2">temp/AVG</td>
+              <td class="border px-4 py-2">
+                {{ convertedTemperature(weather.main.temp) }}°C
+              </td>
+              <td class="border px-4 py-2">{{ weather.main.temp }} K</td>
             </tr>
             <tr>
-              <td>main</td>
-              <td>{{ weather.weather[0].main }}</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">main</td>
+              <td class="border px-4 py-2">{{ weather.weather[0].main }}</td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
             <tr>
-              <td>pressure</td>
-              <td>{{ weather.main.pressure }} hpa</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">pressure</td>
+              <td class="border px-4 py-2">{{ weather.main.pressure }} hpa</td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
             <tr>
-              <td>description</td>
-              <td>{{ weather.weather[0].description }}</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">description</td>
+              <td class="border px-4 py-2">
+                {{ weather.weather[0].description }}
+              </td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
             <tr>
-              <td>wind</td>
-              <td>{{ weather.wind.speed }}</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">wind</td>
+              <td class="border px-4 py-2">{{ weather.wind.speed }}</td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
             <tr>
-              <td>deg</td>
-              <td>{{ weather.wind.deg }}</td>
-              <td class="empty"></td>
+              <td class="border px-4 py-2">deg</td>
+              <td class="border px-4 py-2">{{ weather.wind.deg }}</td>
+              <td class="border px-4 py-2 empty"></td>
             </tr>
           </table>
         </div>
@@ -130,28 +146,3 @@ onUnmounted(() => {
   localStorage.setItem('cities', JSON.stringify(cities.value))
 })
 </script>
-
-<style scoped>
-div {
-  margin: 10px;
-}
-
-p {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-input,
-select {
-  padding: 5px;
-  margin: 5px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-}
-</style>

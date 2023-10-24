@@ -1,15 +1,6 @@
 <template>
-  <div>
-    <router-link v-bind:to="'/'" class="mainLink">
-      <h1>Weather</h1>
-    </router-link>
-    <router-view></router-view>
+  <div class="py-4 px-6">
+    <router-link to="/" class="text-2xl font-bold">Weather</router-link>
+    <router-view class="mt-4"></router-view>
   </div>
 </template>
-
-<style scoped>
-.mainLink {
-  color: black;
-  text-decoration-line: none;
-}
-</style>
